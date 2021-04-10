@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garlic Bread Time&trade;</title>
     <style>
+        :root {
+            --bg-size: 5em;
+            --bg-move-dur: 5s;
+        }
+        @keyframes moving-bg {
+            0%   { background-position: 0;              }
+            100% { background-position: var(--bg-size); }
+        }
+        @keyframes fade-out {
+            from { opacity: 1; }
+            to   { opacity: 0; }
+        }
         html { height: 100%; }
         body {
             margin: 0;
@@ -15,17 +27,13 @@
             height: 100%;
 
             font-family: Arial, Helvetica, sans-serif;
-            background: white url(garlic-bread.svg);
+            background: white url(garlic-bread.svg); /* icon from flaticon.com */
             background-repeat: repeat;
-            background-size: 5em;
-            background-position: -10%;
+            background-size: var(--bg-size);
+            background-position: -15%;
 
-            animation: moving 5s infinite;
+            animation: moving-bg var(--bg-move-dur) infinite;
             animation-timing-function: linear;
-        }
-        @keyframes moving {
-            0%   { background-position: 0;   }
-            100% { background-position: 5em; }
         }
         #main {
             background-color: white;
@@ -35,12 +43,31 @@
             margin: 2em;
             font-size: 2em;
             box-shadow: 5px 5px 1px black;
+            animation: fade-in 1s;
         }
+        #toolbar {
+            position: absolute;
+            top: 0.2em; right: 0.5em;
+        }
+        a { color: black; }
     </style>
 </head>
 <body>
     <div id="main">Loading... <span style="font-size: 0.5em">Is Javascript enabled?</span></div>
+    <div id="toolbar">
+        <a href="javascript:void(0)" id="anim-disable">disable scrolling background</a>
+        /
+        <a href="javascript:void(0)" id="toolb-hide">hide this</a>
+    </div>
     <script>
+        const hideToolbar = () => document.querySelector("#toolbar").style.display = "none";
+        document.querySelector("#anim-disable").addEventListener("click", e => {
+            document.body.style.animation = "none";
+            hideToolbar();
+            e.preventDefault();
+        })
+        document.querySelector("#toolb-hide").addEventListener("click", e => { hideToolbar(); e.preventDefault(); })
+
         const ordinal = n => {
             if(n === 1) return "1st";
             else if(n === 2) return "2nd";
@@ -54,14 +81,10 @@
             const now = new Date();
             const mins = now.getMinutes();
             let hrs = now.getHours();
-            if(mins === 0)
-                mainBox.textContent = "It is Garlic Bread Time";
+            if(mins === 0) mainBox.textContent = "It is Garlic Bread Time";
             else{
-                if(hrs === 0) hrs = 23;
-                if(mins < 30)
-                    mainBox.textContent = `${minutes(mins)} past the ${ordinal(now.getHours())} Garlic Bread Time`;
-                else
-                    mainBox.textContent = `${minutes(60 - mins)} until the ${ordinal(now.getHours()+1)} Garlic Bread Time`;
+                if(mins < 30 && hrs > 0) mainBox.textContent = `${minutes(mins)} past the ${ordinal(hrs)} Garlic Bread Time`;
+                else mainBox.textContent = `${minutes(60 - mins)} until the ${ordinal(hrs+1)} Garlic Bread Time`;
             }
         }, 1000)
     </script>
