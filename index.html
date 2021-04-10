@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- look ma, no frameworks -->
     <title>Garlic Bread Time&trade;</title>
     <style>
         :root {
@@ -70,19 +71,21 @@
             else if(n === 2) return "2nd";
             else if(n === 3) return "3rd";
             else if(n < 21) return `${n}th`;
-            else return n.toString().slice(0, -1) + ordinal(parseInt(n.toString().slice(-1)));
+            else return Math.floor(n / 10) + ordinal(Math.floor(n % 10));
         }
         const minutes = n => n > 1 ? `${n} minutes` : `1 minute`;
         const mainBox = document.querySelector("#main");
+        
         setInterval(() => {
             const now = new Date();
             const mins = now.getMinutes();
             let hrs = now.getHours();
-            if(mins === 0) mainBox.textContent = "It is Garlic Bread Time";
-            else{
-                if(mins < 30 && hrs > 0) mainBox.textContent = `${minutes(mins)} past the ${ordinal(hrs)} Garlic Bread Time`;
-                else mainBox.textContent = `${minutes(60 - mins)} until the ${ordinal(hrs+1)} Garlic Bread Time`;
-            }
+            if(mins === 0)
+                mainBox.textContent = "It is Garlic Bread Time";
+            else if(mins < 30 && hrs > 0)
+                mainBox.textContent = `${minutes(mins)} past the ${ordinal(hrs)} Garlic Bread Time`;
+            else
+                mainBox.textContent = `${minutes(60 - mins)} until the ${ordinal(hrs+1)} Garlic Bread Time`;
         }, 1000)
     </script>
 </body>
