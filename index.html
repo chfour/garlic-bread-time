@@ -79,13 +79,14 @@
         setInterval(() => {
             const now = new Date();
             const mins = now.getMinutes();
-            let hrs = now.getHours();
-            if(mins === 0)
+            const hrs = now.getHours();
+            if(mins === 0){
                 mainBox.textContent = "It is Garlic Bread Time";
-            else if(mins < 30 && hrs > 0)
+            }else if(mins < 30 && hrs > 0){
                 mainBox.textContent = `${minutes(mins)} past the ${ordinal(hrs)} Garlic Bread Time`;
-            else
-                mainBox.textContent = `${minutes(60 - mins)} until the ${ordinal(hrs+1)} Garlic Bread Time`;
+            }else{
+                mainBox.textContent = `${minutes(60 - mins)} until the ${ordinal(hrs+1)} Garlic Bread Time`;                
+            }
         }, 1000)
     </script>
 </body>
