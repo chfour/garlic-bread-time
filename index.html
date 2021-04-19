@@ -67,11 +67,13 @@
         document.querySelector("#toolb-hide").addEventListener("click", e => { hideToolbar(); e.preventDefault(); })
 
         const ordinal = n => {
+            if (typeof n !== 'number') throw new TypeError('Expected Number, got ' + (typeof n) + ' ' + n);
+            if (!Number.isFinite(n)) return n;
             if(n === 1) return "1st";
-            else if(n === 2) return "2nd";
-            else if(n === 3) return "3rd";
-            else if(n < 21) return `${n}th`;
-            else return Math.floor(n / 10) + ordinal(Math.floor(n % 10));
+            if(n === 2) return "2nd";
+            if(n === 3) return "3rd";
+            if(n < 21) return `${n}th`;
+            return Math.floor(n / 10) + ordinal(Math.floor(n % 10));
         }
         const minutes = n => n > 1 ? `${n} minutes` : `1 minute`;
         const mainBox = document.querySelector("#main");
